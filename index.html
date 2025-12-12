@@ -114,18 +114,34 @@
             background-color: #23242e;
         }
 
-        /* Estilo para listas de regras */
+        /* Estilo para listas de regras NUMERADAS */
+        .rule-list {
+            list-style: none; /* Remove padrão do navegador */
+            padding: 0;
+            counter-reset: rule-counter; /* Inicia o contador */
+        }
         .rule-list li {
             position: relative;
             padding-left: 1.5rem;
             margin-bottom: 0.75rem;
         }
         .rule-list li::before {
-            content: "•";
+            counter-increment: rule-counter; /* Incrementa */
+            content: counter(rule-counter) "."; /* Exibe número + ponto */
             position: absolute;
             left: 0;
             color: #e11d48;
             font-weight: bold;
+            font-family: 'Rajdhani', sans-serif; /* Fonte estilizada para os números */
+            font-size: 1.1em;
+        }
+        
+        /* Highlight da busca */
+        .highlight {
+            background-color: rgba(225, 29, 72, 0.3);
+            color: white;
+            border-radius: 2px;
+            padding: 0 2px;
         }
     </style>
 </head>
@@ -141,7 +157,23 @@
             </div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar">
+        <!-- Barra de Pesquisa -->
+        <div class="px-4 py-3 border-b border-[#252530]">
+            <div class="relative">
+                <input type="text" id="search-input" placeholder="Pesquisar regras..." 
+                    class="w-full bg-[#0a0a0f] border border-[#2d2d3a] text-sm text-gray-300 rounded-lg pl-9 pr-3 py-2 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder-gray-600">
+                <svg class="w-4 h-4 text-gray-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+        </div>
+
+        <!-- Container de Resultados da Busca (Oculto por padrão) -->
+        <div id="search-results" class="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar hidden bg-[#0f1014]">
+            <p class="text-xs text-gray-500 uppercase font-bold px-3 py-2">Resultados</p>
+            <div id="results-list" class="space-y-1"></div>
+        </div>
+
+        <!-- Navegação Normal -->
+        <nav id="main-nav" class="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar">
             <!-- Grupo: Introduções -->
             <div>
                 <button type="button" class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-gray-300 hover:bg-[#1f2029] rounded transition-all">
@@ -260,12 +292,12 @@
                 </header>
                 <div class="prose prose-invert max-w-none text-gray-400">
                     <p>Utilize o menu lateral para navegar entre as categorias. Aqui você encontrará:</p>
-                    <ul class="rule-list">
+                    <ol class="rule-list">
                         <li>Regras de convivência e Roleplay.</li>
                         <li>Limites de armamento e perímetro para ações criminosas.</li>
                         <li>Código Penal e procedimentos policiais.</li>
                         <li>Diretrizes para facções e zonas de conflito.</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -276,12 +308,12 @@
                     <p class="text-lg">Todas as doações são voluntárias e destinadas à manutenção e melhoria do servidor.</p>
                     <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a]">
                         <h3 class="text-brand-500 font-bold mb-3">Política de VIP e Itens</h3>
-                        <ul class="rule-list text-sm space-y-2">
+                        <ol class="rule-list text-sm space-y-2">
                             <li>Itens e status VIP têm duração de 30 dias (salvo "permanentes" até o wipe).</li>
                             <li>A venda de contas ou itens doados por dinheiro real (RMT) é estritamente proibida e resulta em banimento.</li>
                             <li>Não realizamos reembolsos em caso de arrependimento ou punição dentro do jogo.</li>
                             <li>Carros VIPs são vinculados à conta e não podem ser passados para terceiros sem autorização.</li>
-                        </ul>
+                        </ol>
                     </div>
                 </div>
             </div>
@@ -291,12 +323,12 @@
                 <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">📜 Termos & Condições</h2>
                 <div class="space-y-4 text-gray-300">
                     <p>Ao se conectar ao Crias RJ, você concorda automaticamente com os seguintes termos:</p>
-                    <ul class="rule-list">
+                    <ol class="rule-list">
                         <li>O servidor não se responsabiliza por instabilidades da plataforma FiveM.</li>
                         <li>O uso de softwares de trapaça (hacks, scripts, macros) resulta em banimento permanente e irreversível (HWID Ban).</li>
                         <li>Sua conta é pessoal e intransferível. Compartilhamento de conta é de sua inteira responsabilidade.</li>
                         <li>A staff reserva-se o direito de punir comportamentos que, mesmo não listados, prejudiquem a comunidade.</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -305,12 +337,12 @@
                 <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">🛡️ Termos de Equipe</h2>
                 <div class="space-y-4 text-gray-300">
                     <p>Diretrizes para membros da administração e suporte:</p>
-                    <ul class="rule-list">
+                    <ol class="rule-list">
                         <li><strong>Imparcialidade:</strong> A staff não deve favorecer amigos ou facções.</li>
                         <li><strong>Profissionalismo:</strong> O atendimento em tickets deve ser sempre educado e direto.</li>
                         <li><strong>Abuso de Poder:</strong> Usar comandos administrativos (noclip, spawn de itens) para benefício próprio ou RP é proibido.</li>
                         <li><strong>Sigilo:</strong> Informações de logs e investigações internas não podem ser vazadas.</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -353,12 +385,12 @@
 
                 <div class="bg-red-900/20 border border-red-500/30 p-5 rounded">
                     <h3 class="text-red-400 font-bold mb-3 uppercase text-sm">Proibições em SafeZone</h3>
-                    <ul class="rule-list text-gray-300 text-sm">
+                    <ol class="rule-list text-gray-300 text-sm">
                         <li>Matar, agredir ou roubar outros jogadores.</li>
                         <li>Fugir para dentro de uma SafeZone durante uma perseguição policial ou combate (Anti-RP).</li>
                         <li>Exibir armas de fogo ou brancas sem necessidade.</li>
                         <li>Fazer "campana" na saída de safezones para assaltar jogadores (Safe Camping).</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -367,12 +399,12 @@
                 <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">⭐ Sobre os Cidadãos</h2>
                 <div class="space-y-4 text-gray-300">
                     <p>Regras para jogadores que não pertencem a facções ou corporações:</p>
-                    <ul class="rule-list">
+                    <ol class="rule-list">
                         <li><strong>Emprego:</strong> É incentivado que todo cidadão tenha um emprego legal (Lixeiro, Motorista, etc.).</li>
                         <li><strong>Armamento:</strong> Cidadãos podem portar apenas pistolas para defesa pessoal, mediante porte de armas (se a lei permitir). Armas pesadas são restritas.</li>
                         <li><strong>Crimes:</strong> Cidadãos podem cometer pequenos delitos (furtos), mas não podem participar de grandes assaltos a banco ou dominar territórios.</li>
                         <li><strong>Auxílio:</strong> Cidadãos não devem interferir em ações policiais a menos que sua vida esteja em risco direto.</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -385,19 +417,19 @@
                     <div class="grid md:grid-cols-2 gap-6">
                         <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a]">
                             <h3 class="text-white font-bold mb-3">Requisitos de Início</h3>
-                            <ul class="rule-list text-sm">
+                            <ol class="rule-list text-sm">
                                 <li>Mínimo de 3 membros online e equipados.</li>
                                 <li>Uniforme da facção obrigatório.</li>
                                 <li>Líder ou Gerente deve estar presente para anotar na GZ.</li>
-                            </ul>
+                            </ol>
                         </div>
                         <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a]">
                             <h3 class="text-white font-bold mb-3">Durante a Ação</h3>
-                            <ul class="rule-list text-sm">
+                            <ol class="rule-list text-sm">
                                 <li>Entrada apenas pelas ruas principais. Proibido entrar por morros ou cair de paraquedas fora do perímetro.</li>
                                 <li>Máximo de 2 barricadas por entrada (não podem fechar a rua totalmente).</li>
                                 <li>Helicópteros: Só permitido se houver 3+ aliados no solo e a favela já estiver em conflito (vermelha).</li>
-                            </ul>
+                            </ol>
                         </div>
                     </div>
                 </div>
@@ -408,12 +440,12 @@
                 <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">👥 Sobre as Facções</h2>
                 <div class="space-y-5 text-gray-300">
                     <p>Organizações criminosas que controlam o tráfico e territórios.</p>
-                    <ul class="rule-list">
+                    <ol class="rule-list">
                         <li><strong>Hierarquia:</strong> Respeite a cadeia de comando. O líder tem a palavra final.</li>
                         <li><strong>Alianças:</strong> É <strong>estritamente proibido</strong> qualquer tipo de aliança entre facções para defesa de território ou ataque (baque). Cada facção luta por si.</li>
                         <li><strong>Vendas:</strong> A venda de drogas deve ocorrer nas áreas designadas ou rotas.</li>
                         <li><strong>Recrutamento:</strong> Proibido recrutar em áreas seguras ou forçar jogadores a entrarem na facção.</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -443,21 +475,21 @@
                 
                 <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a] mb-6">
                     <h3 class="text-brand-500 font-bold mb-3 text-lg">🕒 Horários de Ação (Real)</h3>
-                    <ul class="rule-list text-sm text-gray-300">
+                    <ol class="rule-list text-sm text-gray-300">
                         <li><strong>Assaltos a Lojas e Bancos:</strong> Permitidos das 10:00 às 02:00.</li>
                         <li><strong>Ações de Rua:</strong> Livre (Respeitando Safezones).</li>
                         <li><strong>Sequestros:</strong> Permitidos das 14:00 às 00:00.</li>
-                    </ul>
+                    </ol>
                 </div>
 
                 <div class="space-y-4 text-gray-300">
-                    <ul class="rule-list">
+                    <ol class="rule-list">
                         <li><strong>Início:</strong> Ações de rua devem começar e terminar na rua. Se a polícia chegar, a fuga começa imediatamente.</li>
                         <li><strong>Safezone:</strong> É proibido fugir para dentro de uma Safezone após iniciar uma ação.</li>
                         <li><strong>Looting:</strong> Permitido lootear policiais e inimigos apenas em zonas vermelhas (Favelas, Helicrash). Em ações de rua, loot é proibido.</li>
                         <li><strong>Reinício (Restart):</strong> Após o servidor reiniciar, deve-se aguardar 20 minutos antes de iniciar qualquer ação agressiva (assaltos, sequestros, baques).</li>
                         <li><strong>Negociação:</strong> Em assaltos com refém, a negociação é obrigatória. A polícia deve prezar pela vida do refém e os bandidos pela fuga.</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -469,11 +501,11 @@
                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">2 - 3</span></div>
                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
                     </div>
-                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                    <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas. (Proibido Glock Rajada/Automática).</li>
                         <li><strong>Negociação:</strong> Obrigatória. Proibido sequestrar reféns externos (usar NPC se possível ou negociar saída).</li>
                         <li><strong>Perímetro:</strong> Apenas o interior da loja.</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -484,11 +516,11 @@
                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">3 - 4</span></div>
                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
                     </div>
-                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                    <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                          <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
                          <li><strong>Posicionamento:</strong> Obrigatório todos os bandidos estarem FORA da loja.</li>
                          <li><strong>Proibido:</strong> Marcar drop da polícia (atirar assim que a polícia chegar).</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
             
@@ -499,11 +531,11 @@
                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">4 - 6</span></div>
                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
                     </div>
-                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                    <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
                         <li><strong>Regra:</strong> Negociação obrigatória. Proibido marcar drop.</li>
                         <li><strong>Específico:</strong> Regra de Tet/Chão obrigatória.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -514,10 +546,10 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">3 - 5</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
                     </div>
-                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                    <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
                         <li><strong>Perímetro:</strong> Azul (Polícia inicia), Vermelho (Área de ação - proibido matar de fora pra dentro).</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -528,11 +560,11 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">3 - 4</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
                     </div>
-                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                    <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
                         <li><strong>Negociação:</strong> Obrigatória.</li>
                         <li><strong>Restrição:</strong> Tet/Chão obrigatório.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -543,11 +575,11 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">2 - 3</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
                     </div>
-                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                    <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
                         <li><strong>Negociação:</strong> Obrigatória.</li>
                         <li><strong>Restrição:</strong> Tet/Chão obrigatório.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -558,11 +590,11 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">3 - 4</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
                     </div>
-                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                    <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
                         <li><strong>Posicionamento:</strong> Máximo 2 dentro da loja.</li>
                         <li><strong>Regra:</strong> Negociação obrigatória. Proibido marcar drop.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -573,11 +605,11 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">8 - 10</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 2</span></div>
                     </div>
-                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                    <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
                         <li><strong>Perímetro:</strong> Linha AMARELA (Só pode atirar após a polícia passar).</li>
                         <li><strong>Regra:</strong> Negociação obrigatória.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -588,10 +620,10 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">2 - 3</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
                     </div>
-                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                     <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
                         <li><strong>Negociação:</strong> Obrigatória. Proibido marcar drop.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -603,12 +635,12 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">8 - 10</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 3</span></div>
                     </div>
-                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                     <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Médio Calibre (MTAR, Glock Rajada, MP5).</li>
                         <li><strong>Smokes:</strong> Polícia pode usar até 2 smokes (inegociável).</li>
                         <li><strong>Perímetro:</strong> Apenas o interior do açougue.</li>
                         <li><strong>Proibido:</strong> Armas não letais.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -619,11 +651,11 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">8 - 10</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 3</span></div>
                     </div>
-                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                     <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Médio Calibre (MTAR, Glock Rajada, MP5).</li>
                         <li><strong>Smokes:</strong> Polícia pode usar até 2 smokes (inegociável).</li>
                         <li><strong>Perímetro:</strong> Apenas o interior do galinheiro.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -635,11 +667,11 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">10 - 15</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 3</span></div>
                     </div>
-                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                     <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Alto Calibre (Fuzil). Proibido MG/Sniper.</li>
                         <li><strong>Posicionamento:</strong> Permitido 3 a 4 bandidos fora.</li>
                         <li><strong>Smokes:</strong> Polícia pode usar até 3 smokes.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -650,11 +682,11 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">10 - 13</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 3</span></div>
                     </div>
-                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                     <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Alto Calibre (Fuzil).</li>
                         <li><strong>Posicionamento:</strong> Permitido 2 a 3 bandidos fora.</li>
                         <li><strong>Smokes:</strong> Polícia pode usar até 2 smokes.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -665,11 +697,11 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">8 - 12</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 2</span></div>
                     </div>
-                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                     <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Alto Calibre (Fuzil).</li>
                         <li><strong>Metrô:</strong> Máximo 2 bandidos no metrô. Somente 3 policiais podem entrar por baixo.</li>
                         <li><strong>Proibido:</strong> Usar interior do Tribunal/Prefeitura.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -680,11 +712,11 @@
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">12 - 16</span></div>
                          <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 5</span></div>
                     </div>
-                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                     <ol class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
                         <li><strong>Armamento:</strong> Alto Calibre (Fuzil).</li>
                         <li><strong>Perímetro:</strong> Interior do Nióbio. P2 é apenas passagem da polícia.</li>
                         <li><strong>Smokes:</strong> Polícia pode usar até 4 smokes.</li>
-                   </ul>
+                   </ol>
                 </div>
             </div>
 
@@ -694,7 +726,7 @@
                 
                 <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a] mb-6">
                     <h3 class="text-brand-500 font-bold mb-3 text-lg">🕒 Horários de Sequestro</h3>
-                    <ul class="rule-list text-sm text-gray-300">
+                    <ol class="rule-list text-sm text-gray-300">
                         <li><strong>Horário Real:</strong> Permitido das 14:00 às 00:00 (Brasília).</li>
                         <li><strong>Horário In-Game (IC):</strong> 
                             <ul class="ml-4 mt-1 list-none space-y-1">
@@ -702,17 +734,17 @@
                                 <li><span class="text-gray-400">Zona Norte:</span> 06h às 18h (Dia).</li>
                             </ul>
                         </li>
-                    </ul>
+                    </ol>
                 </div>
 
                 <div class="space-y-4 text-gray-300">
                     <p>Atos de privação de liberdade exigem regras estritas:</p>
-                    <ul class="rule-list">
+                    <ol class="rule-list">
                         <li><strong>Obrigações:</strong> Algemar a vítima e portar arma de fogo visível.</li>
                         <li><strong>Proporção:</strong> Sempre 2 sequestradores para cada 1 vítima (2x1).</li>
                         <li><strong>Veículo:</strong> Proibido usar motos para sequestrar. Use carros com assentos suficientes.</li>
                         <li><strong>Serviços Legais:</strong> Só pode sequestrar PM/SAMU/Mecânico se estiverem fora de serviço e sem uniforme.</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -729,11 +761,11 @@
                             <li><strong>Código 5:</strong> Disparo autorizado (Letal). Apenas sob ameaça direta ou QRR confirmado.</li>
                         </ul>
                     </div>
-                    <ul class="rule-list">
+                    <ol class="rule-list">
                         <li><strong>Revistas:</strong> Apenas permitidas em flagrante delito ou fundada suspeita.</li>
                         <li><strong>Corrupção:</strong> Estritamente proibida. Policiais corruptos levam banimento e reset.</li>
                         <li><strong>Incursões:</strong> Operações em favelas exigem mínimo de policiais e comando superior.</li>
-                    </ul>
+                    </ol>
                 </div>
             </div>
 
@@ -778,7 +810,16 @@
     </main>
 
     <script>
+        // Função para mostrar a seção
         function showSection(sectionId, element) {
+            // Se vier da busca, primeiro limpa a busca
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+            const mainNav = document.getElementById('main-nav');
+            
+            // Só reseta a busca se estiver clicando num resultado de busca ou navegação normal
+            // Mas queremos manter a UX fluida.
+            
             document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
             
             const targetSection = document.getElementById(sectionId);
@@ -786,13 +827,161 @@
                 targetSection.classList.add('active');
                 document.getElementById('main-scroll-area').scrollTop = 0;
                 updateNavigationFooter(targetSection);
+                
+                // Remove destaques anteriores
+                removeHighlights();
             }
 
-            if (element) {
-                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            // Atualiza menu lateral ativo (se houver elemento correspondente no menu principal)
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            
+            // Tenta encontrar o link no menu principal correspondente a esta seção
+            // O 'element' pode ser um link do menu ou um item da busca
+            // Se for item da busca, precisamos achar o link real no menu
+            if (!element || element.parentElement.id === 'results-list') {
+                 // Encontra o botão no menu principal que chama essa função
+                 const navBtn = document.querySelector(`#main-nav button[onclick="showSection('${sectionId}', this)"]`);
+                 if (navBtn) {
+                     navBtn.classList.add('active');
+                     // Opcional: abrir o accordion pai
+                     const parentContent = navBtn.closest('.accordion-content');
+                     if(parentContent && !parentContent.classList.contains('open')) {
+                         parentContent.classList.add('open');
+                         // Gira a seta
+                         const arrow = parentContent.previousElementSibling.querySelector('.arrow-icon');
+                         if(arrow) arrow.classList.add('rotate');
+                     }
+                 }
+            } else {
                 element.classList.add('active');
             }
+
+            // Se clicou num resultado de busca, podemos limpar a busca ou mantê-la.
+            // Geralmente limpar é melhor para ver o menu de novo.
+            if (element && element.parentElement.id === 'results-list') {
+                 searchInput.value = '';
+                 searchResults.classList.add('hidden');
+                 mainNav.classList.remove('hidden');
+                 
+                 // Destaca o termo buscado no conteúdo
+                 const query = element.dataset.query;
+                 if (query && targetSection) {
+                     highlightText(targetSection, query);
+                 }
+            }
         }
+
+        // Sistema de Busca
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        const resultsList = document.getElementById('results-list');
+        const mainNav = document.getElementById('main-nav');
+
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (query.length === 0) {
+                searchResults.classList.add('hidden');
+                mainNav.classList.remove('hidden');
+                return;
+            }
+
+            mainNav.classList.add('hidden');
+            searchResults.classList.remove('hidden');
+            resultsList.innerHTML = '';
+
+            const sections = document.querySelectorAll('.content-section');
+            let found = false;
+
+            sections.forEach(section => {
+                // Pega título (do atributo ou h2) e texto
+                const title = section.getAttribute('data-title') || section.querySelector('h2')?.innerText || '';
+                const text = section.innerText;
+                
+                // Verifica match
+                if (title.toLowerCase().includes(query) || text.toLowerCase().includes(query)) {
+                    found = true;
+                    
+                    // Cria item de resultado
+                    const btn = document.createElement('button');
+                    btn.className = 'w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#1f2029] hover:text-white rounded transition-all group flex flex-col';
+                    btn.onclick = () => showSection(section.id, btn);
+                    btn.dataset.query = query; // Guarda query para highlight
+
+                    // Título do resultado
+                    const titleSpan = document.createElement('span');
+                    titleSpan.className = 'font-bold text-brand-500 group-hover:text-brand-400';
+                    titleSpan.innerText = title;
+
+                    // Trecho do texto (Snippet)
+                    let snippetText = "Conteúdo correspondente encontrado...";
+                    // Tenta achar onde o texto dá match para mostrar um snippet
+                    const lowerText = text.toLowerCase();
+                    const index = lowerText.indexOf(query);
+                    if (index !== -1) {
+                        const start = Math.max(0, index - 20);
+                        const end = Math.min(text.length, index + query.length + 40);
+                        snippetText = "..." + text.substring(start, end).replace(/\n/g, ' ') + "...";
+                    }
+
+                    const snippetSpan = document.createElement('span');
+                    snippetSpan.className = 'text-xs text-gray-500 mt-1 truncate w-full';
+                    snippetSpan.innerText = snippetText;
+
+                    btn.appendChild(titleSpan);
+                    btn.appendChild(snippetSpan);
+                    resultsList.appendChild(btn);
+                }
+            });
+
+            if (!found) {
+                const noResult = document.createElement('div');
+                noResult.className = 'text-center text-sm text-gray-500 py-4';
+                noResult.innerText = 'Nenhum resultado encontrado.';
+                resultsList.appendChild(noResult);
+            }
+        });
+
+        // Função de Highlight
+        function highlightText(element, query) {
+            if (!query) return;
+            
+            // Função recursiva para percorrer nós de texto
+            function traverse(node) {
+                if (node.nodeType === 3) { // Node de texto
+                    const text = node.nodeValue;
+                    const regex = new RegExp(`(${query})`, 'gi');
+                    if (regex.test(text)) {
+                        const span = document.createElement('span');
+                        span.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+                        node.parentNode.replaceChild(span, node);
+                    }
+                } else if (node.nodeType === 1 && node.childNodes && !/(script|style)/i.test(node.tagName) && !node.classList.contains('highlight')) {
+                    // Percorre filhos, mas evita scripts e styles e já destacados
+                    Array.from(node.childNodes).forEach(child => traverse(child));
+                }
+            }
+            
+            traverse(element);
+        }
+
+        function removeHighlights() {
+            document.querySelectorAll('.highlight').forEach(el => {
+                const parent = el.parentNode;
+                parent.replaceChild(document.createTextNode(el.innerText), el);
+                parent.normalize(); // Junta nós de texto adjacentes
+            });
+            // O código acima é simplificado e pode quebrar estrutura HTML complexa se o highlight envolver tags.
+            // Para um sistema robusto de remover highlight, seria necessário recarregar o conteúdo original ou usar uma lib.
+            // Como é um SPA simples, podemos apenas remover a classe highlight ou resetar o innerHTML se tivéssemos cache.
+            // Uma solução melhor e mais segura para este caso específico (evitar quebrar HTML):
+            // Recarregar a página seria drástico. Vamos apenas remover a tag span mantendo o texto.
+             document.querySelectorAll('span.highlight').forEach(span => {
+                const text = document.createTextNode(span.textContent);
+                span.parentNode.replaceChild(text, span);
+            });
+        }
+
 
         function updateNavigationFooter(currentSection) {
             const footer = document.getElementById('navigation-footer');
