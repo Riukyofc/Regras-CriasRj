@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crias RJ - Documentação Oficial</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            900: '#881337',
+                        },
+                        dark: {
+                            900: '#0a0a0f',
+                            800: '#13131f',
+                            700: '#1c1c2e',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Globais */
+        body {
+            background-color: #0f1014;
+            color: #b0b0b9;
+            overflow: hidden;
+        }
+
+        #main-scroll-area {
+            height: 100vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f1014; }
+        ::-webkit-scrollbar-thumb { background: #2d2d3a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b4b5a; }
+
+        .sidebar-container {
+            background-color: #16161e;
+            border-right: 1px solid #252530;
+        }
+
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out;
+        }
+        .accordion-inner { overflow: hidden; }
+        .accordion-content.open { grid-template-rows: 1fr; }
+
+        .arrow-icon { transition: transform 0.2s ease; }
+        .arrow-icon.rotate { transform: rotate(180deg); }
+
+        .nav-link {
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+            color: #94949f;
+        }
+        .nav-link:hover {
+            color: #e2e2e8;
+            background-color: rgba(255,255,255,0.03);
+        }
+        .nav-link.active {
+            color: #ffffff;
+            border-left-color: #e11d48;
+            background: linear-gradient(90deg, rgba(225, 29, 72, 0.1) 0%, transparent 100%);
+            font-weight: 600;
+        }
+
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .nav-footer-btn {
+            background-color: #1a1b23;
+            border: 1px solid #2d2d3a;
+            transition: all 0.2s;
+        }
+        .nav-footer-btn:hover {
+            border-color: #e11d48;
+            background-color: #23242e;
+        }
+
+        /* Estilo para listas de regras */
+        .rule-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .rule-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #e11d48;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="flex h-screen antialiased">
+
+    <!-- Sidebar (Menu Lateral) -->
+    <aside id="sidebar" class="sidebar-container w-80 flex-shrink-0 flex flex-col h-full z-20 hidden md:flex">
+        <div class="p-6 border-b border-[#252530] flex items-center gap-3">
+            <img src="https://images.iimg.live/images/epic-vision-1190.webp" class="w-10 h-10 object-contain drop-shadow-md" alt="Logo">
+            <div>
+                <h1 class="font-display font-bold text-xl text-white tracking-wide">CRIAS <span class="text-brand-500">RJ</span></h1>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Documentação</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar">
+            <!-- Grupo: Introduções -->
+            <div>
+                <button type="button" class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-gray-300 hover:bg-[#1f2029] rounded transition-all">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Introduções das Regras
+                    </span>
+                    <svg class="arrow-icon w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content open">
+                    <div class="accordion-inner pl-4 border-l border-[#2d2d3a] ml-2.5 mt-1 space-y-0.5">
+                        <button onclick="showSection('termos-doacoes', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded">Termos de Doações</button>
+                        <button onclick="showSection('termos-condicoes', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded">Termos & Condições</button>
+                        <button onclick="showSection('termos-equipe', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded">Termos de Equipe</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grupo: Regras Gerais -->
+            <div class="mt-2">
+                <button type="button" class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-gray-300 hover:bg-[#1f2029] rounded transition-all">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        Regras Gerais
+                    </span>
+                    <svg class="arrow-icon w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content open">
+                    <div class="accordion-inner pl-4 border-l border-[#2d2d3a] ml-2.5 mt-1 space-y-0.5">
+                        
+                        <button onclick="showSection('regras-roleplay', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded flex items-center gap-2"><span class="text-gray-500">👥</span> Sobre o Roleplay</button>
+                        <button onclick="showSection('safezone', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded flex items-center gap-2"><span class="text-gray-500">🛡️</span> Sobre a SafeZone</button>
+                        
+                        <div class="pt-2 pb-1 text-[10px] font-bold text-gray-500 uppercase px-3 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Cidadãos & Facções
+                        </div>
+                        <button onclick="showSection('cidadao', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded flex items-center gap-2"><span class="text-yellow-500 text-[10px]">⭐</span> Sobre os Cidadão</button>
+                        <button onclick="showSection('baque', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded flex items-center gap-2"><span class="text-gray-400">🔫</span> Sobre o Baque</button>
+                        <button onclick="showSection('faccoes', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded flex items-center gap-2"><span class="text-purple-400">👥</span> Sobre as Facções</button>
+                        <button onclick="showSection('advertencia-faccao', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded flex items-center gap-2"><span class="text-orange-500">⚠️</span> ADVERTÊNCIA DE FACÇÃO</button>
+
+                        <div class="pt-3 pb-1 text-[10px] font-bold text-gray-500 uppercase px-3 flex items-center gap-2">
+                             <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span> Ações e Assaltos
+                        </div>
+                        <button onclick="showSection('regras-acoes', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded">Regras gerais de assaltos</button>
+
+                        <!-- Pequeno Porte -->
+                        <button type="button" class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 text-xs font-semibold text-gray-400 hover:text-white hover:bg-[#1f2029] rounded mt-1">
+                            <span class="flex items-center gap-2"><span class="text-gray-500">🔫</span> AÇÕES PEQUENO PORTE</span>
+                            <svg class="arrow-icon w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner pl-3 border-l border-[#2d2d3a] ml-2 space-y-0.5">
+                                <button onclick="showSection('ammunation', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🔫 AMMUNATION</button>
+                                <button onclick="showSection('bebidas', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🍺 BEBIDAS</button>
+                                <button onclick="showSection('comedy', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🎭 COMEDY</button>
+                                <button onclick="showSection('estabulo', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🍃 ESTÁBULO</button>
+                                <button onclick="showSection('mcdonalds', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🍟 MC DONALDS</button>
+                                <button onclick="showSection('hiper-mercado', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🛒 HIPER MERCADO</button>
+                                <button onclick="showSection('lojinha', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🏪 LOJINHA</button>
+                                <button onclick="showSection('observatorio', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🔭 OBSERVATÓRIO</button>
+                                <button onclick="showSection('lanchonete', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🍔 LANCHONETE</button>
+                            </div>
+                        </div>
+
+                        <!-- Médio Porte -->
+                         <button type="button" class="accordion-btn w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-400 hover:text-white hover:bg-[#1f2029] rounded mt-1">
+                            <span class="flex items-center gap-2"><span class="text-orange-500">🔫</span> AÇÕES MÉDIO PORTE</span>
+                            <svg class="arrow-icon w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner pl-3 border-l border-[#2d2d3a] ml-2 space-y-0.5">
+                                <button onclick="showSection('acougue', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🥩 AÇOUGUE</button>
+                                <button onclick="showSection('galinheiro', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🍗 GALINHEIRO</button>
+                            </div>
+                        </div>
+
+                        <!-- Grande Porte -->
+                         <button type="button" class="accordion-btn w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-400 hover:text-white hover:bg-[#1f2029] rounded mt-1">
+                            <span class="flex items-center gap-2"><span class="text-green-500">🔫</span> AÇÕES GRANDE PORTE</span>
+                            <svg class="arrow-icon w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner pl-3 border-l border-[#2d2d3a] ml-2 space-y-0.5">
+                                <button onclick="showSection('banco-central', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🏦 BANCO CENTRAL</button>
+                                <button onclick="showSection('banco-paleto', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">💰 BANCO PALETO</button>
+                                <button onclick="showSection('joalheria', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">💎 JOALHERIA</button>
+                                <button onclick="showSection('niobio', this)" class="nav-link w-full text-left px-2 py-1.5 text-[11px] rounded">🧪 NIÓBIO</button>
+                            </div>
+                        </div>
+                        
+                        <div class="my-2 border-t border-[#2d2d3a]"></div>
+
+                        <button onclick="showSection('sequestro', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded flex items-center gap-2"><span class="text-gray-500">🕸️</span> Regras Sequestro</button>
+                        <button onclick="showSection('policia', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded flex items-center gap-2"><span class="text-gray-500">👮</span> Sobre a Polícia</button>
+                        <button onclick="showSection('regras-extremas', this)" class="nav-link w-full text-left px-3 py-2 text-xs rounded flex items-center gap-2"><span class="text-gray-500">🔥</span> Regras Extremas</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main id="main-scroll-area" class="flex-1 bg-[#0f1014] relative">
+        <div class="max-w-4xl mx-auto p-6 md:p-12 pb-24">
+
+            <!-- HOME -->
+            <div id="home" class="content-section active">
+                <header class="relative rounded-2xl overflow-hidden h-64 mb-8 border border-white/5">
+                    <img src="https://images.iimg.live/images/awesome-view-1801.webp" class="absolute inset-0 w-full h-full object-cover" alt="Banner">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0f1014] via-black/50 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <h1 class="font-display font-bold text-4xl text-white">Crias RJ - Documentação</h1>
+                        <p class="text-gray-300 mt-2">Guia oficial de regras, penalidades e procedimentos.</p>
+                    </div>
+                </header>
+                <div class="prose prose-invert max-w-none text-gray-400">
+                    <p>Utilize o menu lateral para navegar entre as categorias. Aqui você encontrará:</p>
+                    <ul class="rule-list">
+                        <li>Regras de convivência e Roleplay.</li>
+                        <li>Limites de armamento e perímetro para ações criminosas.</li>
+                        <li>Código Penal e procedimentos policiais.</li>
+                        <li>Diretrizes para facções e zonas de conflito.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TERMOS DE DOAÇÕES -->
+            <div id="termos-doacoes" class="content-section" data-title="Termos de Doações" data-prev="home" data-next="termos-condicoes">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">💰 Termos de Doações</h2>
+                <div class="space-y-6 text-gray-300">
+                    <p class="text-lg">Todas as doações são voluntárias e destinadas à manutenção e melhoria do servidor.</p>
+                    <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a]">
+                        <h3 class="text-brand-500 font-bold mb-3">Política de VIP e Itens</h3>
+                        <ul class="rule-list text-sm space-y-2">
+                            <li>Itens e status VIP têm duração de 30 dias (salvo "permanentes" até o wipe).</li>
+                            <li>A venda de contas ou itens doados por dinheiro real (RMT) é estritamente proibida e resulta em banimento.</li>
+                            <li>Não realizamos reembolsos em caso de arrependimento ou punição dentro do jogo.</li>
+                            <li>Carros VIPs são vinculados à conta e não podem ser passados para terceiros sem autorização.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TERMOS & CONDIÇÕES -->
+            <div id="termos-condicoes" class="content-section" data-title="Termos & Condições" data-prev="termos-doacoes" data-next="termos-equipe">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">📜 Termos & Condições</h2>
+                <div class="space-y-4 text-gray-300">
+                    <p>Ao se conectar ao Crias RJ, você concorda automaticamente com os seguintes termos:</p>
+                    <ul class="rule-list">
+                        <li>O servidor não se responsabiliza por instabilidades da plataforma FiveM.</li>
+                        <li>O uso de softwares de trapaça (hacks, scripts, macros) resulta em banimento permanente e irreversível (HWID Ban).</li>
+                        <li>Sua conta é pessoal e intransferível. Compartilhamento de conta é de sua inteira responsabilidade.</li>
+                        <li>A staff reserva-se o direito de punir comportamentos que, mesmo não listados, prejudiquem a comunidade.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TERMOS DE EQUIPE -->
+            <div id="termos-equipe" class="content-section" data-title="Termos de Equipe" data-prev="termos-condicoes" data-next="regras-roleplay">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">🛡️ Termos de Equipe</h2>
+                <div class="space-y-4 text-gray-300">
+                    <p>Diretrizes para membros da administração e suporte:</p>
+                    <ul class="rule-list">
+                        <li><strong>Imparcialidade:</strong> A staff não deve favorecer amigos ou facções.</li>
+                        <li><strong>Profissionalismo:</strong> O atendimento em tickets deve ser sempre educado e direto.</li>
+                        <li><strong>Abuso de Poder:</strong> Usar comandos administrativos (noclip, spawn de itens) para benefício próprio ou RP é proibido.</li>
+                        <li><strong>Sigilo:</strong> Informações de logs e investigações internas não podem ser vazadas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- REGRAS DE ROLEPLAY -->
+            <div id="regras-roleplay" class="content-section" data-title="Sobre o Roleplay" data-prev="termos-equipe" data-next="safezone">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">👥 Sobre o Roleplay</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-[#1a1b23] p-5 rounded border-l-4 border-brand-500">
+                        <strong class="text-white block mb-2 text-lg">Powergaming (PG)</strong>
+                        <p class="text-sm text-gray-400">Realizar ações impossíveis na vida real. Exemplos: subir montanhas com carros esportivos, falar estando morto, algemar alguém de costas.</p>
+                    </div>
+                    <div class="bg-[#1a1b23] p-5 rounded border-l-4 border-brand-500">
+                        <strong class="text-white block mb-2 text-lg">Metagaming (MG)</strong>
+                        <p class="text-sm text-gray-400">Utilizar informações externas (Discord, Lives) dentro do jogo. O personagem só sabe o que vivencia na cidade.</p>
+                    </div>
+                    <div class="bg-[#1a1b23] p-5 rounded border-l-4 border-brand-500">
+                        <strong class="text-white block mb-2 text-lg">Random Deathmatch (RDM)</strong>
+                        <p class="text-sm text-gray-400">Matar ou agredir outro jogador sem motivo prévio de roleplay ou história construída.</p>
+                    </div>
+                    <div class="bg-[#1a1b23] p-5 rounded border-l-4 border-brand-500">
+                        <strong class="text-white block mb-2 text-lg">Combat Logging (CL)</strong>
+                        <p class="text-sm text-gray-400">Desconectar do jogo propositalmente durante uma ação, perseguição ou abordagem para evitar consequências.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAFEZONE -->
+            <div id="safezone" class="content-section" data-title="Sobre a SafeZone" data-prev="regras-roleplay" data-next="cidadao">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">🛡️ Zonas Seguras (SafeZone)</h2>
+                <p class="text-gray-300 mb-6">Locais de proteção absoluta onde crimes são proibidos.</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-[#1a1b23] p-4 rounded text-center border border-white/5">Hospitais & UPAs</div>
+                    <div class="bg-[#1a1b23] p-4 rounded text-center border border-white/5">Delegacias</div>
+                    <div class="bg-[#1a1b23] p-4 rounded text-center border border-white/5">Mecânicas</div>
+                    <div class="bg-[#1a1b23] p-4 rounded text-center border border-white/5">Praça Central</div>
+                    <div class="bg-[#1a1b23] p-4 rounded text-center border border-white/5">Concessionárias</div>
+                    <div class="bg-[#1a1b23] p-4 rounded text-center border border-white/5">Garagens Públicas</div>
+                </div>
+
+                <div class="bg-red-900/20 border border-red-500/30 p-5 rounded">
+                    <h3 class="text-red-400 font-bold mb-3 uppercase text-sm">Proibições em SafeZone</h3>
+                    <ul class="rule-list text-gray-300 text-sm">
+                        <li>Matar, agredir ou roubar outros jogadores.</li>
+                        <li>Fugir para dentro de uma SafeZone durante uma perseguição policial ou combate (Anti-RP).</li>
+                        <li>Exibir armas de fogo ou brancas sem necessidade.</li>
+                        <li>Fazer "campana" na saída de safezones para assaltar jogadores (Safe Camping).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CIDADÃOS -->
+            <div id="cidadao" class="content-section" data-title="Sobre os Cidadãos" data-prev="safezone" data-next="baque">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">⭐ Sobre os Cidadãos</h2>
+                <div class="space-y-4 text-gray-300">
+                    <p>Regras para jogadores que não pertencem a facções ou corporações:</p>
+                    <ul class="rule-list">
+                        <li><strong>Emprego:</strong> É incentivado que todo cidadão tenha um emprego legal (Lixeiro, Motorista, etc.).</li>
+                        <li><strong>Armamento:</strong> Cidadãos podem portar apenas pistolas para defesa pessoal, mediante porte de armas (se a lei permitir). Armas pesadas são restritas.</li>
+                        <li><strong>Crimes:</strong> Cidadãos podem cometer pequenos delitos (furtos), mas não podem participar de grandes assaltos a banco ou dominar territórios.</li>
+                        <li><strong>Auxílio:</strong> Cidadãos não devem interferir em ações policiais a menos que sua vida esteja em risco direto.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BAQUE -->
+            <div id="baque" class="content-section" data-title="Sobre o Baque" data-prev="cidadao" data-next="faccoes">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">🔫 Sobre o Baque</h2>
+                <div class="space-y-6 text-gray-300">
+                    <p>Baque é a invasão de território inimigo para demonstrar poder.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a]">
+                            <h3 class="text-white font-bold mb-3">Requisitos de Início</h3>
+                            <ul class="rule-list text-sm">
+                                <li>Mínimo de 3 membros online e equipados.</li>
+                                <li>Uniforme da facção obrigatório.</li>
+                                <li>Líder ou Gerente deve estar presente para anotar na GZ.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a]">
+                            <h3 class="text-white font-bold mb-3">Durante a Ação</h3>
+                            <ul class="rule-list text-sm">
+                                <li>Entrada apenas pelas ruas principais. Proibido entrar por morros ou cair de paraquedas fora do perímetro.</li>
+                                <li>Máximo de 2 barricadas por entrada (não podem fechar a rua totalmente).</li>
+                                <li>Helicópteros: Só permitido se houver 3+ aliados no solo e a favela já estiver em conflito (vermelha).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FACÇÕES -->
+            <div id="faccoes" class="content-section" data-title="Sobre as Facções" data-prev="baque" data-next="advertencia-faccao">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">👥 Sobre as Facções</h2>
+                <div class="space-y-5 text-gray-300">
+                    <p>Organizações criminosas que controlam o tráfico e territórios.</p>
+                    <ul class="rule-list">
+                        <li><strong>Hierarquia:</strong> Respeite a cadeia de comando. O líder tem a palavra final.</li>
+                        <li><strong>Alianças:</strong> É <strong>estritamente proibido</strong> qualquer tipo de aliança entre facções para defesa de território ou ataque (baque). Cada facção luta por si.</li>
+                        <li><strong>Vendas:</strong> A venda de drogas deve ocorrer nas áreas designadas ou rotas.</li>
+                        <li><strong>Recrutamento:</strong> Proibido recrutar em áreas seguras ou forçar jogadores a entrarem na facção.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ADVERTÊNCIA FACÇÃO -->
+            <div id="advertencia-faccao" class="content-section" data-title="Advertência de Facção" data-prev="faccoes" data-next="regras-acoes">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">⚠️ Advertência de Facção</h2>
+                <p class="text-gray-300 mb-4">O descumprimento das regras de facção gera punições coletivas:</p>
+                <div class="space-y-3">
+                    <div class="flex items-center bg-[#1a1b23] p-4 rounded border-l-4 border-yellow-500">
+                        <span class="text-yellow-500 font-bold mr-4">1º AVISO</span>
+                        <span class="text-gray-300">Multa de R$ 10.000.000 (Dinheiro Sujo).</span>
+                    </div>
+                    <div class="flex items-center bg-[#1a1b23] p-4 rounded border-l-4 border-orange-500">
+                        <span class="text-orange-500 font-bold mr-4">2º AVISO</span>
+                        <span class="text-gray-300">Multa de R$ 15.000.000 (Dinheiro Sujo).</span>
+                    </div>
+                    <div class="flex items-center bg-[#1a1b23] p-4 rounded border-l-4 border-red-600">
+                        <span class="text-red-600 font-bold mr-4">3º AVISO</span>
+                        <span class="text-gray-300">Multa de R$ 20.000.000 + 24h sem baque/barricada + Perda da Gestão da Favela.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REGRAS AÇÕES GERAL -->
+            <div id="regras-acoes" class="content-section" data-title="Regras Gerais de Assaltos" data-prev="advertencia-faccao" data-next="ammunation">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">💥 Regras Gerais de Ações</h2>
+                
+                <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a] mb-6">
+                    <h3 class="text-brand-500 font-bold mb-3 text-lg">🕒 Horários de Ação (Real)</h3>
+                    <ul class="rule-list text-sm text-gray-300">
+                        <li><strong>Assaltos a Lojas e Bancos:</strong> Permitidos das 10:00 às 02:00.</li>
+                        <li><strong>Ações de Rua:</strong> Livre (Respeitando Safezones).</li>
+                        <li><strong>Sequestros:</strong> Permitidos das 14:00 às 00:00.</li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4 text-gray-300">
+                    <ul class="rule-list">
+                        <li><strong>Início:</strong> Ações de rua devem começar e terminar na rua. Se a polícia chegar, a fuga começa imediatamente.</li>
+                        <li><strong>Safezone:</strong> É proibido fugir para dentro de uma Safezone após iniciar uma ação.</li>
+                        <li><strong>Looting:</strong> Permitido lootear policiais e inimigos apenas em zonas vermelhas (Favelas, Helicrash). Em ações de rua, loot é proibido.</li>
+                        <li><strong>Reinício (Restart):</strong> Após o servidor reiniciar, deve-se aguardar 20 minutos antes de iniciar qualquer ação agressiva (assaltos, sequestros, baques).</li>
+                        <li><strong>Negociação:</strong> Em assaltos com refém, a negociação é obrigatória. A polícia deve prezar pela vida do refém e os bandidos pela fuga.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ==== PEQUENO PORTE ==== -->
+            <div id="ammunation" class="content-section" data-title="Ammunation" data-prev="regras-acoes" data-next="bebidas">
+                <h2 class="text-3xl font-display font-bold text-white mb-4">🔫 Ammunation (Loja de Armas)</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-[#2d2d3a]">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">2 - 3</span></div>
+                        <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
+                    </div>
+                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas. (Proibido Glock Rajada/Automática).</li>
+                        <li><strong>Negociação:</strong> Obrigatória. Proibido sequestrar reféns externos (usar NPC se possível ou negociar saída).</li>
+                        <li><strong>Perímetro:</strong> Apenas o interior da loja.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="bebidas" class="content-section" data-title="Bebidas" data-prev="ammunation" data-next="comedy">
+                <h2 class="text-3xl font-display font-bold text-white mb-4">🍺 Loja de Bebidas</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-[#2d2d3a]">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">3 - 4</span></div>
+                        <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
+                    </div>
+                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                         <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
+                         <li><strong>Posicionamento:</strong> Obrigatório todos os bandidos estarem FORA da loja.</li>
+                         <li><strong>Proibido:</strong> Marcar drop da polícia (atirar assim que a polícia chegar).</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="comedy" class="content-section" data-title="Comedy" data-prev="bebidas" data-next="estabulo">
+                 <h2 class="text-3xl font-display font-bold text-white mb-4">🎭 Comedy Club</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-[#2d2d3a]">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">4 - 6</span></div>
+                        <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
+                    </div>
+                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
+                        <li><strong>Regra:</strong> Negociação obrigatória. Proibido marcar drop.</li>
+                        <li><strong>Específico:</strong> Regra de Tet/Chão obrigatória.</li>
+                   </ul>
+                </div>
+            </div>
+
+            <div id="estabulo" class="content-section" data-title="Estábulo" data-prev="comedy" data-next="mcdonalds">
+                 <h2 class="text-3xl font-display font-bold text-white mb-4">🍃 Estábulo</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-[#2d2d3a]">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">3 - 5</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
+                    </div>
+                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
+                        <li><strong>Perímetro:</strong> Azul (Polícia inicia), Vermelho (Área de ação - proibido matar de fora pra dentro).</li>
+                   </ul>
+                </div>
+            </div>
+
+            <div id="mcdonalds" class="content-section" data-title="MC Donalds" data-prev="estabulo" data-next="hiper-mercado">
+                 <h2 class="text-3xl font-display font-bold text-white mb-4">🍟 MC Donalds</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-[#2d2d3a]">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">3 - 4</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
+                    </div>
+                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
+                        <li><strong>Negociação:</strong> Obrigatória.</li>
+                        <li><strong>Restrição:</strong> Tet/Chão obrigatório.</li>
+                   </ul>
+                </div>
+            </div>
+
+             <div id="hiper-mercado" class="content-section" data-title="Hiper Mercado" data-prev="mcdonalds" data-next="lojinha">
+                 <h2 class="text-3xl font-display font-bold text-white mb-4">🛒 Hiper Mercado</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-[#2d2d3a]">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">2 - 3</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
+                    </div>
+                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
+                        <li><strong>Negociação:</strong> Obrigatória.</li>
+                        <li><strong>Restrição:</strong> Tet/Chão obrigatório.</li>
+                   </ul>
+                </div>
+            </div>
+
+            <div id="lojinha" class="content-section" data-title="Lojinha" data-prev="hiper-mercado" data-next="observatorio">
+                 <h2 class="text-3xl font-display font-bold text-white mb-4">🏪 Lojinha de Departamento</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-[#2d2d3a]">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">3 - 4</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
+                    </div>
+                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
+                        <li><strong>Posicionamento:</strong> Máximo 2 dentro da loja.</li>
+                        <li><strong>Regra:</strong> Negociação obrigatória. Proibido marcar drop.</li>
+                   </ul>
+                </div>
+            </div>
+
+             <div id="observatorio" class="content-section" data-title="Observatório" data-prev="lojinha" data-next="lanchonete">
+                 <h2 class="text-3xl font-display font-bold text-white mb-4">🔭 Observatório</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-[#2d2d3a]">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">8 - 10</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 2</span></div>
+                    </div>
+                    <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
+                        <li><strong>Perímetro:</strong> Linha AMARELA (Só pode atirar após a polícia passar).</li>
+                        <li><strong>Regra:</strong> Negociação obrigatória.</li>
+                   </ul>
+                </div>
+            </div>
+
+             <div id="lanchonete" class="content-section" data-title="Lanchonete" data-prev="observatorio" data-next="acougue">
+                 <h2 class="text-3xl font-display font-bold text-white mb-4">🍔 Lanchonete</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-[#2d2d3a]">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">2 - 3</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 1</span></div>
+                    </div>
+                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Apenas Pistolas Semi-Automáticas.</li>
+                        <li><strong>Negociação:</strong> Obrigatória. Proibido marcar drop.</li>
+                   </ul>
+                </div>
+            </div>
+
+            <!-- ==== MÉDIO PORTE ==== -->
+            <div id="acougue" class="content-section" data-title="Açougue" data-prev="lanchonete" data-next="galinheiro">
+                <h2 class="text-3xl font-display font-bold text-white mb-4 text-orange-500">🥩 Açougue</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-orange-900/30">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">8 - 10</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 3</span></div>
+                    </div>
+                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Médio Calibre (MTAR, Glock Rajada, MP5).</li>
+                        <li><strong>Smokes:</strong> Polícia pode usar até 2 smokes (inegociável).</li>
+                        <li><strong>Perímetro:</strong> Apenas o interior do açougue.</li>
+                        <li><strong>Proibido:</strong> Armas não letais.</li>
+                   </ul>
+                </div>
+            </div>
+
+            <div id="galinheiro" class="content-section" data-title="Galinheiro" data-prev="acougue" data-next="banco-central">
+                <h2 class="text-3xl font-display font-bold text-white mb-4 text-orange-500">🍗 Galinheiro</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-orange-900/30">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">8 - 10</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 3</span></div>
+                    </div>
+                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Médio Calibre (MTAR, Glock Rajada, MP5).</li>
+                        <li><strong>Smokes:</strong> Polícia pode usar até 2 smokes (inegociável).</li>
+                        <li><strong>Perímetro:</strong> Apenas o interior do galinheiro.</li>
+                   </ul>
+                </div>
+            </div>
+
+             <!-- ==== GRANDE PORTE ==== -->
+             <div id="banco-central" class="content-section" data-title="Banco Central" data-prev="galinheiro" data-next="banco-paleto">
+                <h2 class="text-3xl font-display font-bold text-white mb-4 text-red-500">🏦 Banco Central</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-red-900/30">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">10 - 15</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 3</span></div>
+                    </div>
+                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Alto Calibre (Fuzil). Proibido MG/Sniper.</li>
+                        <li><strong>Posicionamento:</strong> Permitido 3 a 4 bandidos fora.</li>
+                        <li><strong>Smokes:</strong> Polícia pode usar até 3 smokes.</li>
+                   </ul>
+                </div>
+            </div>
+
+            <div id="banco-paleto" class="content-section" data-title="Banco Paleto" data-prev="banco-central" data-next="joalheria">
+                <h2 class="text-3xl font-display font-bold text-white mb-4 text-red-500">💰 Banco Paleto</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-red-900/30">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">10 - 13</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 3</span></div>
+                    </div>
+                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Alto Calibre (Fuzil).</li>
+                        <li><strong>Posicionamento:</strong> Permitido 2 a 3 bandidos fora.</li>
+                        <li><strong>Smokes:</strong> Polícia pode usar até 2 smokes.</li>
+                   </ul>
+                </div>
+            </div>
+
+            <div id="joalheria" class="content-section" data-title="Joalheria" data-prev="banco-paleto" data-next="niobio">
+                <h2 class="text-3xl font-display font-bold text-white mb-4 text-red-500">💎 Joalheria</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-red-900/30">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">8 - 12</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 2</span></div>
+                    </div>
+                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Alto Calibre (Fuzil).</li>
+                        <li><strong>Metrô:</strong> Máximo 2 bandidos no metrô. Somente 3 policiais podem entrar por baixo.</li>
+                        <li><strong>Proibido:</strong> Usar interior do Tribunal/Prefeitura.</li>
+                   </ul>
+                </div>
+            </div>
+
+            <div id="niobio" class="content-section" data-title="Nióbio" data-prev="joalheria" data-next="sequestro">
+                <h2 class="text-3xl font-display font-bold text-white mb-4 text-red-500">🧪 Nióbio</h2>
+                <div class="bg-[#1a1b23] p-6 rounded-xl border border-red-900/30">
+                     <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Bandidos</span><span class="text-xl font-bold text-white">12 - 16</span></div>
+                         <div class="bg-black/20 p-3 rounded"><span class="block text-xs text-gray-500 uppercase">Polícia</span><span class="text-xl font-bold text-blue-400">Qtd Bandidos + 5</span></div>
+                    </div>
+                     <ul class="rule-list text-sm text-gray-400 border-t border-[#2d2d3a] pt-4">
+                        <li><strong>Armamento:</strong> Alto Calibre (Fuzil).</li>
+                        <li><strong>Perímetro:</strong> Interior do Nióbio. P2 é apenas passagem da polícia.</li>
+                        <li><strong>Smokes:</strong> Polícia pode usar até 4 smokes.</li>
+                   </ul>
+                </div>
+            </div>
+
+            <!-- SEQUESTRO -->
+            <div id="sequestro" class="content-section" data-title="Regras Sequestro" data-prev="niobio" data-next="policia">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">🕸️ Regras Sequestro</h2>
+                
+                <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a] mb-6">
+                    <h3 class="text-brand-500 font-bold mb-3 text-lg">🕒 Horários de Sequestro</h3>
+                    <ul class="rule-list text-sm text-gray-300">
+                        <li><strong>Horário Real:</strong> Permitido das 14:00 às 00:00 (Brasília).</li>
+                        <li><strong>Horário In-Game (IC):</strong> 
+                            <ul class="ml-4 mt-1 list-none space-y-1">
+                                <li><span class="text-gray-400">Zona Sul:</span> 18h às 06h (Noite).</li>
+                                <li><span class="text-gray-400">Zona Norte:</span> 06h às 18h (Dia).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4 text-gray-300">
+                    <p>Atos de privação de liberdade exigem regras estritas:</p>
+                    <ul class="rule-list">
+                        <li><strong>Obrigações:</strong> Algemar a vítima e portar arma de fogo visível.</li>
+                        <li><strong>Proporção:</strong> Sempre 2 sequestradores para cada 1 vítima (2x1).</li>
+                        <li><strong>Veículo:</strong> Proibido usar motos para sequestrar. Use carros com assentos suficientes.</li>
+                        <li><strong>Serviços Legais:</strong> Só pode sequestrar PM/SAMU/Mecânico se estiverem fora de serviço e sem uniforme.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- POLICIA -->
+            <div id="policia" class="content-section" data-title="Sobre a Polícia" data-prev="sequestro" data-next="regras-extremas">
+                <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">👮 Sobre a Polícia</h2>
+                <div class="space-y-6 text-gray-300">
+                    <div class="bg-[#1a1b23] p-5 rounded border border-[#2d2d3a]">
+                        <h3 class="text-blue-400 font-bold mb-2">Códigos de Abordagem</h3>
+                        <ul class="text-sm space-y-1">
+                            <li><strong>Código 1:</strong> Abordagem de rotina. Sem arma na mão.</li>
+                            <li><strong>Código 2:</strong> Suspeita fundada. Arma em punho, mas sem apontar diretamente.</li>
+                            <li><strong>Código 3:</strong> Risco iminente / Flagrante. Arma apontada, ordem de rendição.</li>
+                            <li><strong>Código 5:</strong> Disparo autorizado (Letal). Apenas sob ameaça direta ou QRR confirmado.</li>
+                        </ul>
+                    </div>
+                    <ul class="rule-list">
+                        <li><strong>Revistas:</strong> Apenas permitidas em flagrante delito ou fundada suspeita.</li>
+                        <li><strong>Corrupção:</strong> Estritamente proibida. Policiais corruptos levam banimento e reset.</li>
+                        <li><strong>Incursões:</strong> Operações em favelas exigem mínimo de policiais e comando superior.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- REGRAS EXTREMAS -->
+            <div id="regras-extremas" class="content-section" data-title="Regras Extremas" data-prev="policia" data-next="home">
+                 <h2 class="text-3xl font-display font-bold text-white mb-6 pb-4 border-b border-[#252530]">🔥 Regras Extremas</h2>
+                 <p class="text-gray-300 mb-6">Infrações graves que resultam em banimento imediato ou PD.</p>
+                 <div class="grid md:grid-cols-2 gap-4">
+                     <div class="bg-red-900/10 p-5 rounded border border-red-900/30">
+                         <strong class="text-red-400 block mb-2">Anti-Amor à Vida</strong>
+                         <p class="text-sm text-gray-400">Reagir a assaltos quando rendido, pular de lugares altos sem motivo, enfrentar exércitos sozinho.</p>
+                     </div>
+                     <div class="bg-red-900/10 p-5 rounded border border-red-900/30">
+                         <strong class="text-red-400 block mb-2">Dark RP</strong>
+                         <p class="text-sm text-gray-400">Assédio sexual, estupro, racismo, homofobia, nazismo, mutilação extrema.</p>
+                     </div>
+                     <div class="bg-red-900/10 p-5 rounded border border-red-900/30">
+                         <strong class="text-red-400 block mb-2">VDM (Vehicle Deathmatch)</strong>
+                         <p class="text-sm text-gray-400">Usar o veículo como arma para atropelar e matar jogadores propositalmente.</p>
+                     </div>
+                     <div class="bg-red-900/10 p-5 rounded border border-red-900/30">
+                         <strong class="text-red-400 block mb-2">Revenge Kill (RK)</strong>
+                         <p class="text-sm text-gray-400">Voltar ao local da morte ou tentar se vingar de quem te matou após "renascer" no hospital.</p>
+                     </div>
+                 </div>
+            </div>
+
+            <!-- FOOTER DE NAVEGAÇÃO -->
+            <div id="navigation-footer" class="mt-16 pt-8 border-t border-[#252530] flex justify-between items-center hidden">
+                <button id="btn-prev" class="nav-footer-btn px-6 py-4 rounded-lg text-left group w-5/12">
+                    <span class="block text-xs text-gray-500 mb-1 group-hover:text-brand-500 transition-colors">&lt; Anterior</span>
+                    <span id="prev-title" class="block text-sm font-bold text-white uppercase truncate">--</span>
+                </button>
+                
+                <button id="btn-next" class="nav-footer-btn px-6 py-4 rounded-lg text-right group w-5/12">
+                    <span class="block text-xs text-gray-500 mb-1 group-hover:text-brand-500 transition-colors">Próximo &gt;</span>
+                    <span id="next-title" class="block text-sm font-bold text-white uppercase truncate">--</span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function showSection(sectionId, element) {
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                document.getElementById('main-scroll-area').scrollTop = 0;
+                updateNavigationFooter(targetSection);
+            }
+
+            if (element) {
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                element.classList.add('active');
+            }
+        }
+
+        function updateNavigationFooter(currentSection) {
+            const footer = document.getElementById('navigation-footer');
+            const prevId = currentSection.getAttribute('data-prev');
+            const nextId = currentSection.getAttribute('data-next');
+            
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            const prevTitleEl = document.getElementById('prev-title');
+            const nextTitleEl = document.getElementById('next-title');
+
+            if (!prevId && !nextId) {
+                footer.classList.add('hidden');
+                return;
+            }
+
+            footer.classList.remove('hidden');
+
+            if (prevId) {
+                const prevEl = document.getElementById(prevId);
+                let prevTitle = prevEl.getAttribute('data-title') || "Anterior";
+                if(prevId === 'home') prevTitle = "Início";
+
+                prevTitleEl.innerText = prevTitle;
+                btnPrev.onclick = () => {
+                     const menuBtn = document.querySelector(`button[onclick="showSection('${prevId}', this)"]`);
+                     showSection(prevId, menuBtn);
+                };
+                btnPrev.style.visibility = 'visible';
+            } else {
+                btnPrev.style.visibility = 'hidden';
+            }
+
+            if (nextId) {
+                const nextEl = document.getElementById(nextId);
+                let nextTitle = nextEl.getAttribute('data-title') || "Próximo";
+                if(nextId === 'home') nextTitle = "Início";
+
+                nextTitleEl.innerText = nextTitle;
+                btnNext.onclick = () => {
+                     const menuBtn = document.querySelector(`button[onclick="showSection('${nextId}', this)"]`);
+                     showSection(nextId, menuBtn);
+                };
+                btnNext.style.visibility = 'visible';
+            } else {
+                btnNext.style.visibility = 'hidden';
+            }
+        }
+
+        document.querySelectorAll('.accordion-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const panel = this.nextElementSibling;
+                const arrow = this.querySelector('.arrow-icon');
+                panel.classList.toggle('open');
+                if(arrow) arrow.classList.toggle('rotate');
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavigationFooter(document.getElementById('home'));
+        });
+    </script>
+</body>
+</html>
